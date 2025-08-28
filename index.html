@@ -167,6 +167,19 @@
     }
     .badge-gate { font-size: 1rem; }
     .badge .star { width: 16px; height: 16px; color: var(--accent); }
+
+    /* KPI cards + header pill spacing */
+    .kpis { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (min-width: 700px) { .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
+      border-radius: .9rem; padding: 1rem;
+      display: flex; flex-direction: column; gap: .25rem; min-height: 92px;
+    }
+    .stat-value { font-size: clamp(1.1rem, 2vw + .4rem, 1.6rem); font-weight: 800; color: var(--fg); }
+    .stat-label { color: var(--muted); font-weight: 600; font-size: .9rem; letter-spacing: .2px; text-transform: uppercase; }
+    .brand .pill { margin-left: .25rem; }
   </style>
 </head>
 <body>
@@ -175,6 +188,7 @@
       <div class="brand">
         <span class="dot" aria-hidden="true"></span>
         <span>Aditya&nbsp;Chincholkar</span>
+        <span class="pill" aria-label="GATE All India Rank 595">GATE AIR 595</span>
       </div>
 
       <nav class="links" aria-label="Site">
@@ -183,6 +197,7 @@
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#education">Education</a>
+        <a href="#highlights">Highlights</a>
         <a href="#contact">Contact</a>
       </nav>
 
@@ -210,6 +225,7 @@
         <a href="#experience" data-close>Experience</a>
         <a href="#projects" data-close>Projects</a>
         <a href="#education" data-close>Education</a>
+        <a href="#highlights" data-close>Highlights</a>
         <a href="#contact" data-close>Contact</a>
       </div>
     </div>
@@ -251,6 +267,33 @@
           <div class="cta">
             <a class="btn btn-primary" href="#projects" aria-label="View projects">View Projects</a>
             <a class="btn btn-ghost" href="#contact" aria-label="Contact Aditya">Contact</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New KPI Highlights section right after Hero -->
+    <section id="highlights">
+      <div class="container">
+        <h2 class="section-title reveal">
+          <span class="pill">Highlights</span> At‑a‑Glance
+        </h2>
+        <div class="kpis reveal" aria-live="polite">
+          <div class="kpi-card">
+            <div class="stat-value" id="statGate">AIR 595</div>
+            <div class="stat-label">GATE Statistics 2025</div>
+          </div>
+          <div class="kpi-card">
+            <div class="stat-value"><span id="statGithubStars">—</span></div>
+            <div class="stat-label">GitHub Stars</div>
+          </div>
+          <div class="kpi-card">
+            <div class="stat-value"><span id="statNpm">567</span></div>
+            <div class="stat-label">npm (geomaster) Last Month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="stat-value"><span id="statCF">—</span></div>
+            <div class="stat-label">Codeforces Rating</div>
           </div>
         </div>
       </div>
@@ -551,6 +594,56 @@
 
     // Year
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Live stats: GitHub stars, npm downloads, Codeforces rating (with graceful fallbacks)
+    (function() {
+      async function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      }
+
+      // GitHub: sum stargazers across public repos
+      (async () => {
+        try {
+          const res = await fetch("https://api.github.com/users/Aditya-132/repos?per_page=100", { headers: { "Accept": "application/vnd.github+json" } });
+          if (!res.ok) throw new Error("GitHub repos fetch failed");
+          const repos = await res.json();
+          const stars = (repos || []).reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+          await setText("statGithubStars", String(stars));
+        } catch (e) {
+          await setText("statGithubStars", "—");
+        }
+      })();
+
+      // npm: downloads last month for geomaster
+      (async () => {
+        try {
+          const res = await fetch("https://api.npmjs.org/downloads/point/last-month/geomaster");
+          if (!res.ok) throw new Error("npm fetch failed");
+          const data = await res.json();
+          const n = typeof data.downloads === "number" ? data.downloads : 567;
+          // Format compact, e.g., 12.3k
+          const fmt = new Intl.NumberFormat("en", { notation: "compact" }).format(n);
+          await setText("statNpm", fmt);
+        } catch {
+          await setText("statNpm", "567");
+        }
+      })();
+
+      // Codeforces: rating for RockStar132 (may fail due to CORS; fallback to dash)
+      (async () => {
+        try {
+          const res = await fetch("https://codeforces.com/api/user.info?handles=RockStar132");
+          if (!res.ok) throw new Error("CF fetch failed");
+          const data = await res.json();
+          const u = data && data.result && data.result[0];
+          const rating = u && (u.rating || u.maxRating);
+          await setText("statCF", rating ? String(rating) : "—");
+        } catch {
+          await setText("statCF", "—");
+        }
+      })();
+    })();
   </script>
 </body>
 </html>
