@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aditya Chincholkar — Portfolio</title>
+  <meta name="description" content="Portfolio of Aditya Chincholkar: Software Developer, Open Source Contributor, Fullstack Intern. Skills, experience, projects, and contact." />
+  <style>
+    :root{
+      /* Color system: 5 colors total */
+      --primary:#2563eb; /* blue */
+      --accent:#f59e0b;  /* amber */
+      --bg:#ffffff;      /* neutral */
+      --text:#0f172a;    /* neutral */
+      --muted:#64748b;   /* neutral */
+      --muted-rgb:100,116,139;
+      --radius:14px;
+      --shadow:0 8px 30px rgba(0,0,0,.08);
+      --container:1100px;
+    }
+    body.dark{
+      --bg:#0f172a; 
+      --text:#ffffff; 
+      /* Keep muted and brand colors same to respect 5-color rule */
+    }
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.6;
+    }
+    a{color:var(--primary); text-decoration:none}
+    a:hover{opacity:.9}
+    img{max-width:100%; display:block}
+    /* Layout */
+    .container{max-width:var(--container); margin-inline:auto; padding:1rem}
+    header.site-header{
+      position:sticky; top:0; z-index:40; backdrop-filter:saturate(180%) blur(8px);
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      border-bottom:1px solid rgba(var(--muted-rgb),.2);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:1rem}
+    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700}
+    .brand .dot{width:10px; height:10px; border-radius:50%; background:var(--primary)}
+    .nav-links{display:flex; gap:.75rem; flex-wrap:wrap}
+    .nav-links a{
+      padding:.5rem .75rem; border-radius:999px; color:var(--text);
+      border:1px solid rgba(var(--muted-rgb),.2);
+    }
+    .nav-actions{display:flex; align-items:center; gap:.5rem}
+    .btn{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.6rem .9rem; border-radius:12px; border:1px solid rgba(var(--muted-rgb),.25);
+      background:transparent; color:var(--text); cursor:pointer;
+    }
+    .btn.primary{background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:var(--shadow)}
+    .btn.icon{padding:.5rem; border-radius:10px}
+    .mobile-toggle{display:none}
+    /* Hero */
+    .hero{padding:3rem 0 2rem}
+    .hero-wrap{display:grid; gap:1.25rem}
+    .card{
+      border:1px solid rgba(var(--muted-rgb),.2);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      background:var(--bg);
+    }
+    .hero-card{display:grid; gap:1rem; padding:1.25rem}
+    .title{font-size:clamp(1.6rem,4vw,2.25rem); line-height:1.2; font-weight:800; letter-spacing:-0.015em}
+    .subtitle{color:var(--muted); font-weight:500}
+    .contact-row, .social-row{display:flex; flex-wrap:wrap; gap:.5rem}
+    .pill{
+      display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .65rem; border-radius:999px;
+      border:1px solid rgba(var(--muted-rgb),.25); color:var(--text); background:transparent; font-size:.95rem;
+    }
+    .pill .icon{width:18px; height:18px}
+    .badge{display:inline-flex; align-items:center; padding:.35rem .6rem; border-radius:999px; font-size:.85rem; border:1px solid rgba(var(--muted-rgb),.25); color:var(--text)}
+    .section{padding:1rem 0}
+    .section h2{
+      font-size:1.25rem; margin:0 0 .75rem; font-weight:800; letter-spacing:-0.01em;
+      display:flex; align-items:center; gap:.6rem;
+    }
+    .section h2 .bar{display:inline-block; width:8px; height:20px; border-radius:4px; background:var(--accent)}
+    /* Grid cards */
+    .grid{display:grid; gap:1rem}
+    @media (min-width:720px){
+      .hero{padding:4rem 0 2.25rem}
+      .grid.cols-2{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .grid.cols-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+      .hero-wrap{grid-template-columns:2.2fr 1fr}
+    }
+    .card-inner{padding:1rem}
+    .item{display:grid; gap:.35rem}
+    .item .top{display:flex; align-items:center; justify-content:space-between; gap:.5rem}
+    .company{font-weight:700}
+    .role{color:var(--muted)}
+    .time{font-size:.9rem; color:var(--muted)}
+    .list{margin:.25rem 0 0 .9rem; padding:0; display:grid; gap:.35rem}
+    .list li{margin-left:.25rem}
+    .skills-cloud{display:flex; flex-wrap:wrap; gap:.5rem}
+    .skills-group{display:grid; gap:.5rem}
+    .group-title{font-weight:700; color:var(--text)}
+    .muted{color:var(--muted)}
+    .project-links{display:flex; gap:.5rem; flex-wrap:wrap}
+    .footer{
+      padding:2rem 0; border-top:1px solid rgba(var(--muted-rgb),.2);
+      color:var(--muted); font-size:.95rem;
+    }
+    /* Mobile nav drawer */
+    .drawer{
+      position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:50;
+    }
+    .drawer.open{display:block}
+    .drawer-panel{
+      position:absolute; right:0; top:0; height:100%; width:min(85vw,380px); background:var(--bg);
+      box-shadow:var(--shadow); border-left:1px solid rgba(var(--muted-rgb),.2); padding:1rem;
+      display:grid; align-content:start; gap:.75rem;
+    }
+    .drawer a{padding:.65rem .75rem; border-radius:10px; border:1px solid rgba(var(--muted-rgb),.2); color:var(--text)}
+    /* Reveal animation */
+    .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
+    .reveal-in{opacity:1; transform:none}
+    /* Utilities */
+    .row{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap}
+    .spacer{height:.25rem}
+    .top-actions{display:flex; gap:.5rem; align-items:center}
+    /* Responsive tweaks */
+    @media (max-width:720px){
+      .nav-links{display:none}
+      .mobile-toggle{display:inline-flex}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand" aria-label="Home">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Aditya Chincholkar</span>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#activities">Activities</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+           moon/sun 
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button class="btn icon mobile-toggle" id="openDrawer" aria-label="Open menu">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <a class="btn primary" href="#contact">Hire Me</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+     Hero 
+    <section id="about" class="hero container">
+      <div class="hero-wrap">
+        <div class="card hero-card reveal">
+          <h1 class="title text-balance">ADITYA CHINCHOLKAR</h1>
+          <p class="subtitle">Software Developer • Open Source Contributor • Fullstack Engineer</p>
+          <div class="contact-row" aria-label="Contact">
+            <span class="pill">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M2 5l10 7 10-7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 19h20V5H2v14z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a href="mailto:adityachincholkar11@gmail.com">adityachincholkar11@gmail.com</a>
+            </span>
+            <span class="pill">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M2 5h4l2 5-3 2a11 11 0 0 0 7 7l2-3 5 2v4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a href="tel:+917385041646">+91 7385041646</a>
+            </span>
+            <span class="pill">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z" stroke-width="1.5"/>
+                <circle cx="12" cy="9" r="2.5" stroke-width="1.5"/>
+              </svg>
+              Nagpur, India
+            </span>
+          </div>
+          <div class="social-row" aria-label="Profiles">
+            <a class="badge" href="#" target="_blank" rel="noreferrer">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 4h16v16H4z" stroke-width="1.5"/></svg>
+              Codeforces
+            </a>
+            <a class="badge" href="#" target="_blank" rel="noreferrer">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M9 19c-4 1.5-4-2-6-2 0-4 3-6 3-6-1-4 3-6 6-3 3-3 7-1 6 3 0 0 3 2 3 6-2 0-2 3-6 2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              GitHub
+            </a>
+            <a class="badge" href="#" target="_blank" rel="noreferrer">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 20l8-16 8 16-8-4-8 4z" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              LeetCode
+            </a>
+          </div>
+        </div>
+
+        <div class="card hero-card reveal" aria-label="Highlights">
+          <div class="row">
+            <span class="badge" title="CGPA">CGPA 7.01</span>
+            <span class="badge" title="GATE 2025 AIR">GATE 2025 AIR 595</span>
+            <span class="badge" title="Experience">Open Source, Fullstack</span>
+          </div>
+          <div class="spacer"></div>
+          <div class="row">
+            <a class="btn" href="#projects">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              See Projects
+            </a>
+            <a class="btn" href="#skills">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L5 20l2-7L2 9h7l3-7z" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              Explore Skills
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     Skills 
+    <section id="skills" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Skills</h2>
+      <div class="grid cols-2">
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Programming Languages</div>
+          <div class="skills-cloud">
+            <span class="badge">Python</span><span class="badge">JavaScript</span><span class="badge">TypeScript</span>
+            <span class="badge">Java</span><span class="badge">C++</span><span class="badge">SQL</span><span class="badge">Go</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Web Technologies</div>
+          <div class="skills-cloud">
+            <span class="badge">React</span><span class="badge">Next.js</span><span class="badge">Vue</span>
+            <span class="badge">Node.js</span><span class="badge">Express</span><span class="badge">GraphQL</span>
+            <span class="badge">HTML5</span><span class="badge">CSS3</span><span class="badge">Tailwind CSS</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Data Science</div>
+          <div class="skills-cloud">
+            <span class="badge">Pandas</span><span class="badge">NumPy</span><span class="badge">Scikit-learn</span>
+            <span class="badge">TensorFlow</span><span class="badge">PyTorch</span><span class="badge">Matplotlib</span>
+            <span class="badge">Seaborn</span><span class="badge">Plotly</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Databases</div>
+          <div class="skills-cloud">
+            <span class="badge">PostgreSQL</span><span class="badge">MongoDB</span><span class="badge">Redis</span>
+            <span class="badge">Data Warehousing</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">DevOps & Cloud</div>
+          <div class="skills-cloud">
+            <span class="badge">Docker</span><span class="badge">Kubernetes</span><span class="badge">Jenkins</span>
+            <span class="badge">GitHub Actions</span><span class="badge">AWS</span><span class="badge">Azure</span><span class="badge">GCP</span>
+            <span class="badge">Linux</span><span class="badge">Unix</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Practices & CS</div>
+          <div class="skills-cloud">
+            <span class="badge">Git</span><span class="badge">GitHub</span><span class="badge">REST APIs</span>
+            <span class="badge">Microservices</span><span class="badge">OOP</span>
+            <span class="badge">DSA</span><span class="badge">System Design</span><span class="badge">DB Design</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Testing & Quality</div>
+          <div class="skills-cloud">
+            <span class="badge">Unit Testing</span><span class="badge">Integration Testing</span>
+            <span class="badge">Performance Optimization</span><span class="badge">Security Best Practices</span>
+          </div>
+        </div>
+        <div class="card card-inner reveal skills-group">
+          <div class="group-title">Project Management</div>
+          <div class="skills-cloud">
+            <span class="badge">Agile</span><span class="badge">Scrum</span><span class="badge">Jira</span><span class="badge">CI/CD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     Experience 
+    <section id="experience" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Experience</h2>
+      <div class="grid">
+        <div class="card card-inner reveal item">
+          <div class="top">
+            <div>
+              <div class="company">D Language Foundation</div>
+              <div class="role">Open Source Contributor</div>
+            </div>
+            <div class="time">Mar 2025 – Present • Remote</div>
+          </div>
+          <ul class="list">
+            <li>Enhanced mathematical functions in Phobos; optimized std.algorithm.cache reducing time complexity.</li>
+            <li>Improved Complex.abs accuracy for smaller values; developing Regression Publisher for DMD compiler.</li>
+          </ul>
+        </div>
+        <div class="card card-inner reveal item">
+          <div class="top">
+            <div>
+              <div class="company">API-Testing</div>
+              <div class="role">Open Source Contributor</div>
+            </div>
+            <div class="time">Jun 2025 – Present • Remote</div>
+          </div>
+          <ul class="list">
+            <li>Improved UI of Welcome Page and enhanced Testsuite with interface optimizations.</li>
+          </ul>
+        </div>
+        <div class="card card-inner reveal item">
+          <div class="top">
+            <div>
+              <div class="company">Vi Tech Pvt Ltd</div>
+              <div class="role">Fullstack Developer Intern</div>
+            </div>
+            <div class="time">Apr 2024 – Aug 2024 • Pune, Maharashtra</div>
+          </div>
+          <ul class="list">
+            <li>Built responsive UIs with React/Next.js and robust APIs with Node.js/Express.</li>
+            <li>Managed MongoDB/PostgreSQL; led code reviews and performance optimization.</li>
+            <li>Improved app performance and workflows for a seamless UX.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+     Projects 
+    <section id="projects" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Projects</h2>
+      <div class="grid cols-2">
+        <article class="card card-inner reveal item">
+          <div class="top">
+            <div class="company">Enterprise Resource Platform</div>
+            <div class="project-links">
+              <a class="badge" href="#" target="_blank" rel="noreferrer" aria-label="Live Demo">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 17L17 7M10 7h7v7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Live
+              </a>
+            </div>
+          </div>
+          <p class="muted">ERP for college placement management serving 1,500+ users with 85% efficiency improvement. React, Node, Express, MongoDB; secure JWT auth; email via Nodemailer; responsive UI with Tailwind & MUI; deployed on Vercel.</p>
+        </article>
+
+        <article class="card card-inner reveal item">
+          <div class="top">
+            <div class="company">Blockchain-Based Cloud Storage Alternative</div>
+            <div class="project-links">
+              <a class="badge" href="#" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 19c-4 1.5-4-2-6-2 0-4 3-6 3-6-1-4 3-6 6-3 3-3 7-1 6 3 0 0 3 2 3 6-2 0-2 3-6 2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+          <p class="muted">Decentralized storage with custom cryptocurrency for trading space; Solidity + Hardhat smart contracts; MetaMask integration; React frontend and Node backend.</p>
+        </article>
+
+        <article class="card card-inner reveal item">
+          <div class="top">
+            <div class="company">Floppy Disk Data Recovery System</div>
+          </div>
+          <p class="muted">Recovered data from corrupted floppy disks using low-level programming. Custom recovery algorithms in x86 Assembly and C/C++; hex editor based disk analysis.</p>
+        </article>
+      </div>
+    </section>
+
+     Education 
+    <section id="education" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Education</h2>
+      <div class="card card-inner reveal item">
+        <div class="top">
+          <div>
+            <div class="company">SGGSIET, Nanded — Bachelor of Technology</div>
+            <div class="role">2022 – 2026</div>
+          </div>
+          <div class="time">CGPA 7.01 • GATE 2025 AIR 595</div>
+        </div>
+      </div>
+    </section>
+
+     Activities 
+    <section id="activities" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Extra‑Curricular</h2>
+      <div class="grid">
+        <div class="card card-inner reveal">
+          <ul class="list">
+            <li>FIDE Rated Chess Player (1627) — IUT Chess Tournament Winner — Shastra CP Competition Finalist</li>
+            <li>Member of Maths Club — Website Developer at Training and Placement Cell</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+     Contact 
+    <section id="contact" class="section container">
+      <h2><span class="bar" aria-hidden="true"></span> Contact</h2>
+      <div class="card card-inner reveal">
+        <p>Let’s build something impactful. I’m open to internships, full-time roles, and open-source collaboration.</p>
+        <div class="row">
+          <a class="btn primary" href="mailto:adityachincholkar11@gmail.com">Email Me</a>
+          <a class="btn" href="tel:+917385041646">Call</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <div class="row">
+      <span>© <span id="year"></span> Aditya Chincholkar</span>
+      <span>•</span>
+      <span class="muted">Built with HTML, CSS, and JS</span>
+    </div>
+  </footer>
+
+   Mobile Drawer 
+  <div class="drawer" id="drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-panel" role="dialog" aria-modal="true">
+      <div class="top-actions">
+        <button class="btn icon" id="closeDrawer" aria-label="Close menu">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M6 18L18 6" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <strong>Menu</strong>
+      </div>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#activities">Activities</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle with persistence
+    (function(){
+      const key = "theme";
+      const saved = localStorage.getItem(key);
+      if(saved === "dark" || (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)){
+        document.body.classList.add("dark");
+      }
+      const btn = document.getElementById("themeToggle");
+      btn?.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        localStorage.setItem(key, document.body.classList.contains("dark") ? "dark" : "light");
+      });
+    })();
+
+    // Mobile drawer
+    (function(){
+      const drawer = document.getElementById("drawer");
+      const openBtn = document.getElementById("openDrawer");
+      const closeBtn = document.getElementById("closeDrawer");
+      const links = drawer?.querySelectorAll("a") || [];
+      openBtn?.addEventListener("click", ()=>drawer.classList.add("open"));
+      closeBtn?.addEventListener("click", ()=>drawer.classList.remove("open"));
+      drawer?.addEventListener("click", (e)=>{ if(e.target === drawer) drawer.classList.remove("open"); });
+      links.forEach(a=>a.addEventListener("click", ()=>drawer.classList.remove("open")));
+    })();
+
+    // Scroll reveal
+    (function(){
+      const items = document.querySelectorAll(".reveal");
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ e.target.classList.add("reveal-in"); obs.unobserve(e.target); }
+        });
+      }, { threshold: .12, rootMargin: "0px 0px -50px 0px" });
+      items.forEach(el=>obs.observe(el));
+    })();
+
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Replace "#" with real URLs when you have them:
+    // Codeforces: document.querySelector('a:contains("Codeforces")')...
+  </script>
+</body>
+</html>
